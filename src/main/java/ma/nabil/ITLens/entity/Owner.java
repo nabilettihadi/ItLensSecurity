@@ -20,6 +20,10 @@ public class Owner {
     @Column(unique = true)
     private String name;
 
+    @OneToOne(optional = false)
+    @JoinColumn(name = "user_id", unique = true)
+    private User user;
+
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     private List<Survey> surveys = new ArrayList<>();
 }

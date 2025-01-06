@@ -9,6 +9,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SurveyRepository extends JpaRepository<Survey, Integer> {
+    @Query("SELECT s FROM Survey s LEFT JOIN FETCH s.editions WHERE s.id = :id")
+    Survey findByIdWithEditions(Integer id);
+
     @Query("SELECT DISTINCT s FROM Survey s " +
            "LEFT JOIN FETCH s.owner " +
            "LEFT JOIN FETCH s.editions e " +
@@ -19,4 +22,7 @@ public interface SurveyRepository extends JpaRepository<Survey, Integer> {
            "LEFT JOIN FETCH s.owner " +
            "LEFT JOIN FETCH s.editions")
     Page<Survey> findAllWithEditions(Pageable pageable);
+
+    @Query("SELECT s FROM Survey s JOIN s.editions e WHERE e.isPublic = true")
+    Page<Survey> findPublicSurveys(Pageable pageable);
 }
